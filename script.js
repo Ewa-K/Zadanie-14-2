@@ -1,10 +1,14 @@
 var MoviesList = React.createClass({
 
+    propTypes: {
+        movies: React.PropTypes.object.isRequired,
+    },
+
     render: function() {
-        return (React.createElement('div', {},
-            React.createElement('h1', {}, 'Lista filmów:'),
-            React.createElement('ul', {}, Movie)
-        ))
+        var list = this.props.movies.map(function(movie) {
+            return React.createElement(Movie, { key: movie.id, movie: movie })
+        })
+        return (React.createElement('ul', {}, list))
     }
 });
 
@@ -15,10 +19,10 @@ var Movie = React.createClass({
     },
 
     render: function() {
-        return (React.createElement('li', { key: this.props.movie.id },
-            React.createElement(MovieTitle, {}),
-            React.createElement(MovieDescription, {}),
-            React.createElement(MovieImage, {})
+        return (React.createElement('li', {},
+            React.createElement(MovieTitle, { text: this.props.movie.title }),
+            React.createElement(MovieDescription, { text: this.props.movie.desc }),
+            React.createElement(MovieImage, { source: this.props.movie.foto })
         ))
     }
 });
@@ -26,33 +30,33 @@ var Movie = React.createClass({
 var MovieTitle = React.createClass({
 
     propTypes: {
-        movies: React.PropTypes.object.isRequired,
+        text: React.PropTypes.string.isRequired,
     },
 
     render: function() {
-        return React.createElement('h2', { key: this.props.movies.id }, this.props.movies.title)
+        return React.createElement('h2', {}, this.props.text)
     }
 });
 
 var MovieDescription = React.createClass({
 
     propTypes: {
-        movies: React.PropTypes.object.isRequired,
+        text: React.PropTypes.string.isRequired,
     },
 
     render: function() {
-        return React.createElement('p', { key: this.props.movies.id }, this.props.movies.desc)
+        return React.createElement('p', {}, this.props.text)
     }
 });
 
 var MovieImage = React.createClass({
 
     propTypes: {
-        movies: React.PropTypes.object.isRequired,
+        source: React.PropTypes.string.isRequired,
     },
 
     render: function() {
-        return React.createElement('img', { key: this.props.movies.id }, this.props.movies.foto)
+        return React.createElement('img', { src: this.props.source })
     }
 });
 
@@ -77,11 +81,11 @@ var movies = [{
     {
         id: 4,
         title: 'Księżniczka i żaba',
-        desc: 'Film o  o dziewczynie z Nowego Orleanu i księciu zamienionym w żabę, desperacko pragnącym być znów człowiekiem.',
+        desc: 'Film o o dziewczynie z Nowego Orleanu i księciu zamienionym w żabę, desperacko pragnącym być znów człowiekiem.',
         foto: 'ksiezniczka.png'
     }
 ];
 
-var element = React.createElement(MoviesList);
+var element = React.createElement(MoviesList, { movies: movies });
 
 ReactDOM.render(element, document.getElementById('app'));
